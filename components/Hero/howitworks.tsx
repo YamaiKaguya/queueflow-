@@ -53,8 +53,8 @@ export default function HowItWorks() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-          {steps.map((step, index) => (
-            <RoleCard key={step.id} step={step} index={index} />
+          {steps.map((step) => (
+            <RoleCard key={step.id} step={step}  />
           ))}
         </div>
       </div>

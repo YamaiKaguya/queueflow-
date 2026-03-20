@@ -108,7 +108,7 @@ function FeatureCard({feature}: {
         {feature.description}
     </p>
 
-    {feature.hasImage && (
+    {feature.hasImage &&  feature.imageSrc && (
       <div className="mt-2 rounded-xl overflow-hidden border border-gray-100 shadow-sm">
         <div className="relative w-full h-44">
           <Image 
@@ -147,7 +147,7 @@ export default function WhatMakesItWork() {
         {/* Bento grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr">
           {features.map((feature, index) => (
-            <FeatureCard key={index} feature={feature} index={index} />
+            <FeatureCard key={index} feature={feature}/>
           ))}
         </div>
       </div>
