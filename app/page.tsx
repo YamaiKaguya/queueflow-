@@ -1,8 +1,7 @@
-// import { Hero } from "@/components/Hero/Hero";
 import Hero from "@/components/Hero/Hero";
-import { Navbar } from "@/components/Navbar/navbar";
-import WhatMakesIt from "@/components/Hero/whatmakesitwork";
-import HowItWorks from "@/components/Hero/howitworks";
+import Navbar from "@/components/Navbar/Navbar";
+import WhatMakesIt from "@/components/Hero/Whatmakesitwork";
+import HowItWorks from "@/components/Hero/Howitworks";
 import FAQ from "@/components/Hero/FAQ";
 import CTABanner from "@/components/Hero/CTABanner";
 import Footer from "@/components/Hero/Footer";

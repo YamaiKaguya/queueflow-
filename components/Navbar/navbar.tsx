@@ -1,7 +1,7 @@
 import logo from "../../public/QueueFlow+.png";
 import Image from "next/image";
 
-export function Navbar() {
+export default function Navbar() {
     return (
         <nav className={"flex items-center justify-between px-5 py-1 border-b"}>
         <div className="flex items-center gap-2 font-semibold">

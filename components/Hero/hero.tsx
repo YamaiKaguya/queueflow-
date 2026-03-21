@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import More from "../../public/more.svg";
 
-export function Hero() {
+export default function Hero() {
    return (
       <section
          className="grid grid-cols-2 gap-24 place-items-center min-h-[calc(100vh-100px)] px-36 relative"
