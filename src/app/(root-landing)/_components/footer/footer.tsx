@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Logo from "../../public/QueueFlow+.png";
+import Logo from "@/public/QueueFlow+.png";
 
 export default function Footer() {
   return (

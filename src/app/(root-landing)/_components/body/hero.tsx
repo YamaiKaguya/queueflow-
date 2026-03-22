@@ -1,9 +1,9 @@
 "use client";
 
-import hospital from "../../public/hospital.jpg";
+import hospital from "@/public/hospital.jpg";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import More from "../../public/more.svg";
+import More from "@/public/more.svg";
 
 export default function Hero() {
    return (
@@ -17,7 +17,7 @@ export default function Hero() {
             </p>
 
             <h1 className="text-5xl font-bold mt-6">
-               Reimagining the <span className="text-blue-500">Wait Experience</span>
+               Reimagining the <span className="text-blue-500" >Wait</span><span className="text-blue-500 font-extrabold"> Experience</span>
             </h1>
 
             <p className="text-gray-600 mt-4">

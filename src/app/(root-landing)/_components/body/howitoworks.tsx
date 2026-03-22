@@ -1,37 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react"; 
+import { useRef } from "react"; 
 
-const steps = [
-  {
-    id: "users",
-    role: "Users join and wait smart",
-    description:
-      "Customer enjoy their time elsewhere while keeping an eye on their phone",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    items: ["Receive SMS Update", "Track Queue Status", "Arrive on Time"],
-    highlighted: false,
-  },
-  {
-    id: "staff",
-    role: "Staff manages the flow",
-    description:
-      "Empower your team with tools that reduce stress and clarify priorities",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    items: ["View Live Queue", "Call Next Customer"],
-    highlighted: true,
-  },
-  {
-    id: "admin",
-    role: "Admin measure and improve",
-    description:
-      "Data driven insights that help you optimize staffing and resource allocation",
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
-    items: ["Review pear hours", "Export Reports", "Analyze Performance"],
-    highlighted: false,
-  },
-];
+import { steps } from "@/src/data/howitowrks"; 
+
 
 export default function HowItWorks() {
   return (
@@ -71,7 +44,7 @@ interface Step {
   highlighted: boolean;
 }
 function RoleCard({ step }: { step: Step }) {
-  const ref = useRef<HTMLDivElement>(null); // keep ref if needed
+  const ref = useRef<HTMLDivElement>(null); 
 
   return (
     <div
@@ -95,7 +68,7 @@ function RoleCard({ step }: { step: Step }) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-gray-900">{step.role}</h3>
-          <p className="text-xs text-gray-400 mt-1 leading-relaxed max-w-[200px] mx-auto">
+          <p className="text-xs text-gray-400 mt-1 leading-relaxed max-w-50 mx-auto">
             {step.description}
           </p>
         </div>
@@ -108,7 +81,7 @@ function RoleCard({ step }: { step: Step }) {
             key={i}
             className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3 transition-transform duration-200 hover:translate-x-1"
           >
-            <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-semibold flex items-center justify-center flex-shrink-0">
+            <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-semibold flex items-center justify-center shrink-0">
               {i + 1}
             </span>
             <span className="text-sm text-gray-700">{item}</span>

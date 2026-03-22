@@ -48,6 +48,15 @@
 }
 
 :root {
+
+  --primary-color: #4395ff;
+  --primary-color-less: #5e9eff;
+  --primary-color-darker: #1e78ff;
+
+  --black: #0a0a0a;
+  --gray: #6B7280;
+  
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

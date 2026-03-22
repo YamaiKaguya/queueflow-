@@ -11,7 +11,6 @@ export default function footer (){
             gap-4 
 
             sm:flex-row">
-            {/*  !sm:flex-row*/}
 
             {/* !LEFT SIDE */}
                 <div className="flex items-center gap-1 text-xs text-gray-400">
