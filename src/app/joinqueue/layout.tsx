@@ -1,14 +1,24 @@
-"use client"
+// app/dashboard/layout.tsx
+import { createClient } from "@/src/lib/supabase/server"
+import { redirect } from "next/navigation"
+import { DashboardHeader } from "@/src/components/header/private-header"
 
-import type { ReactNode } from "react";
-import Header from "@/src/components/header/oooo";
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const supabase = await  createClient()
+  const { data } = await supabase.auth.getUser()
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+  if (!data.user) {
+    redirect("/auth/login")
+  }
 
   return (
     <>
-      <Header />
-      <main>{children}</main>
+      <DashboardHeader user={data.user} />
+      {children}
     </>
-  );
+  )
 }

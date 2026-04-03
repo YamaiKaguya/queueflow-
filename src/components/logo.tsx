@@ -15,9 +15,9 @@ export default function Logo() {
       <Image
         src={logo}
         alt="QueueFlow Logo"
-        className="max-w-11 transition-transform duration-300 hover:scale-110"
+        className="max-w-14 transition-transform duration-300 hover:scale-110"
       />
-        <h1 className="text-xl font-bold bg-linear-to-r from-[var(--primary-color)] to-[var(--primary-color-darker)] bg-clip-text text-transparent tracking-tight">
+        <h1 className="text-2xl font-bold bg-linear-to-r from-[var(--primary-color)] to-[var(--primary-color-darker)] bg-clip-text text-transparent tracking-tight">
         QueueFlow+
         </h1>
     </div>

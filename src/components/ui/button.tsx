@@ -35,7 +35,7 @@ const buttonVariants = cva(
             hover:bg-[var(--primary-color)]/10 transition-transform duration-300 hover:scale-105 cursor-pointer`,
          
          buttonlink: `
-            text-black text-[18px] hover:text-[var(--primary-color-dark)] transition-all duration-300 cursor-pointer`,
+            text-black text-[20px] hover:text-[var(--primary-color-dark)] transition-all duration-300 cursor-pointer`,
 
             
          default: "bg-primary text-primary-foreground hover:bg-primary/90",

@@ -4,6 +4,7 @@ import { updateSession } from '@/src/lib/middleware'
 export async function proxy(request: NextRequest) {
   return await updateSession(request)
 }
+
 export const config = {
   matcher: [
     /*

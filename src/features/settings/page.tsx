@@ -1,4 +1,4 @@
-import Settings from "@/src/app/settings/_components//SettingsPage";
+import Settings from "@/src/features/settings/_components/SettingsPage";
 
 export default function Dashboard() {
    return (

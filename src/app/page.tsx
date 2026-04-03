@@ -5,13 +5,15 @@ import {
    FAQ, 
    CTABanner, 
    Footer, 
-   Copyright,} from "@/src/app/root/_barrel/barrel";
-import Header from "@/src/components/header/oooo"
+   Copyright,} from "@/src/features/landing/_barrel/barrel";
+
+   import { PublicHeader } from "@/src/components/header/public-header"
+   
 
 export default function Home() {
    return (
       <>
-         <Header />
+         <PublicHeader />
          <Hero />
          <WhatMakesIt />
          <HowItWorks />

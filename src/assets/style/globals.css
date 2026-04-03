@@ -54,7 +54,7 @@
   --primary-color-dark: color-mix(in srgb, var(--primary-color) 100%, black 10%);
   --primary-color-darker: #3f51b591;
 
-  --primary-background: #f1f5f9;
+  --primary-background: #f9fafbe7 ;
 
   --black: #0a0a0a;
   --gray: #6B7280;
