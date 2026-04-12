@@ -1,5 +1,5 @@
 import { Users, Clock, MapPin, Info } from "lucide-react"
-import { StatCard } from '@/src/features/dashboard/_components/_subcomponents/StatCard'
+import { StatCard } from '../_components/_subcomponents/StatCard'
 
 type Props = {
    peopleAhead: number

@@ -5,10 +5,12 @@ import { TicketCard }  from './_components/TicketCard'
 import { LatestNews }  from './_components/LatestNews'
 import { FacilityHours }  from './_components/FacilityHours'
 import { HelpCard } from './_components/HelpCard'
+import { CurrentlyServingList } from './_components/QueueList'
 
-import { QueueSkeleton } from '@/src/features/dashboard/_components/_subcomponents/QueueSkeleton'
-import { useCustomerQueue } from '@/src/features/dashboard/_hooks/useCustomQueue'
-import QueueList from './_components/QueueList'
+
+import { QueueSkeleton } from './_components/_subcomponents/QueueSkeleton'
+import { useCustomerQueue } from './_hooks/useCustomQueue'
+
 
 import { useRouter } from 'next/navigation'
    
@@ -56,7 +58,7 @@ export default function DashBoard() {
                         setConfirmed(false)
                      }}
                   />
-                  <QueueList/>
+                  <CurrentlyServingList/>
                </div>
 
                <div className="flex flex-col gap-10">

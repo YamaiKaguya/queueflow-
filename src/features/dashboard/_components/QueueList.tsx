@@ -25,7 +25,7 @@ const currentServing: QueueItem[] = [
 
 const PAGE_SIZE = 5
 
-export default function CurrentlyServingList() {
+export function CurrentlyServingList() {
    const [page, setPage] = useState(0)
 
    const start = page * PAGE_SIZE
