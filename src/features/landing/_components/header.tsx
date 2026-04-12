@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from '@/src/lib/supabase/client';
-import type { User } from "@supabase/supabase-js";
 import { Button } from "@/src/components/ui/button";
 import Logo from "@/src/components/logo";
+
+import type { User, AuthChangeEvent, Session  } from "@supabase/supabase-js";
 
 export function Header() {
    const router = useRouter();
@@ -13,12 +14,12 @@ export function Header() {
    const supabase = createClient();
 
    useEffect(() => {
-      supabase.auth.getUser().then(({ data }) => { 
+      supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
          setUser(data.user);
          setLoading(false);
       });
 
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
          setUser(session?.user ?? null);
          setLoading(false);
       });

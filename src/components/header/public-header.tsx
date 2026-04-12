@@ -6,6 +6,7 @@ import { Button } from "@/src/components/ui/button"
 import { useEffect, useState } from "react"
 import Logo from "../logo"
 
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 type User = {
    email?: string
@@ -17,26 +18,28 @@ export function PublicHeader() {
    const supabase = createClient()
    const [user, setUser] = useState<User>(null)
 
-   useEffect(() => {
-      // Get initial user on mount
-      supabase.auth.getUser().then(({ data }) => {
-         setUser(data.user ? { email: data.user.email, id: data.user.id } : null)
-      })
+      useEffect(() => {
+         const loadUser = async () => {
+            const { data } = await supabase.auth.getUser()
+            const user = data.user
 
-      // Listen for auth state changes (login/logout)
-      const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-         if (session?.user) {
-         setUser({ email: session.user.email, id: session.user.id })
-         } else {
-         setUser(null)
+            setUser(user ? { email: user.email, id: user.id } : null)
          }
-      })
 
-      // Cleanup listener on unmount
-      return () => {
-         listener.subscription.unsubscribe()
-      }
-   }, [supabase])
+         loadUser()
+
+         const { data: listener } = supabase.auth.onAuthStateChange(
+            (event: AuthChangeEvent, session: Session | null) => {
+               if (session?.user) {
+                  setUser({ email: session.user.email, id: session.user.id })
+               } else {
+                  setUser(null)
+               }
+            }
+         )
+
+         return () => listener.subscription.unsubscribe()
+      }, [supabase])
 
    const logout = async () => {
       await supabase.auth.signOut()

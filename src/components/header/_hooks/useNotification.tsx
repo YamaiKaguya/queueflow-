@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/src/lib/supabase/client'
 
+import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
+
 type Notification = {
     id: string
     message: string
@@ -56,8 +58,8 @@ type Notification = {
                 table: 'notifications',
                 filter: `user_id=eq.${userId}`,
                 },
-                (payload) => {
-                setNotifs((prev) => [payload.new as Notification, ...prev])
+                (payload: RealtimePostgresChangesPayload<Notification>) => {
+                    setNotifs((prev) => [payload.new as Notification, ...prev])
                 }
             )
             .subscribe()

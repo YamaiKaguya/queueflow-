@@ -31,6 +31,7 @@ const [position, setPosition]                 = useState(0)
 const [confirmed, setConfirmed]               = useState(false)
 const [loading, setLoading]                   = useState(true)
 
+
 useEffect(() => {
    const fetchUserAndQueue = async () => {
       try {
@@ -50,10 +51,15 @@ useEffect(() => {
 
       // SERVING AND WAITING COUNT
       if (queueState) {
-         const serving = queueState.find((r) => r.status === 'serving')
+         // const serving = queueState.find((r) => r.status === 'serving')
+         const serving = queueState?.find((r: QueueRow) => r.status === 'serving')
 
          if (serving) setCurrentlyServing(serving.ticket_no)
-         setWaitingCount(queueState.filter((r) => r.status === 'waiting').length)
+
+         setWaitingCount(
+            queueState?.filter((r: QueueRow) => r.status === 'waiting').length ?? 0
+         )
+         
       }
 
       // CURRENT USER TICKET
