@@ -1,7 +1,5 @@
 "use client"
 
-import { useRouter } from 'next/navigation'
-
 import {
    StatsRow,
    TicketCard,
@@ -17,7 +15,7 @@ import {
 import { useCustomerQueue } from './_hooks/useCustomQueue'
 
 export default function DashBoard() {
-   const {allTickets, userTicket, setUserTicket, position, currentlyServing, queueStatus, confirmed, setConfirmed, loading } = useCustomerQueue()
+   const {queues, userTicket, position, currentlyServing, queueStatus, confirmed, setConfirmed, loading, removeTicket } = useCustomerQueue()
 
    const ticket = userTicket! 
 
@@ -30,7 +28,7 @@ export default function DashBoard() {
                   {loading ? <StatsRowSkeleton /> : (
                      <StatsRow
                         peopleAhead={Math.max(0, position - 1)}
-                        estWaitMins={position * 3}
+                        estWaitMins={position === 1 ? 0 : position * 3}
                         queueStatus={queueStatus}
                      />
                   )}
@@ -41,14 +39,11 @@ export default function DashBoard() {
                         currentlyServing={currentlyServing}
                         confirmed={confirmed}
                         onConfirm={() => setConfirmed(true)}
-                        onLeave={() => {
-                           setUserTicket(null)
-                           setConfirmed(false)
-                        }}
+                        onLeave={removeTicket}
                      />
                   )}
                   {loading ? <CurrentlyServingListSkeleton /> : (
-                     <CurrentlyServingList allTickets={allTickets} />
+                     <CurrentlyServingList allTickets={queues} />
                   )}
                </div>
 

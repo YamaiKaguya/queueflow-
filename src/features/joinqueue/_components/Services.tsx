@@ -26,7 +26,7 @@ export function ServiceCard({ service: s, isSelected, onSelect }: Props) {
       <button
          onClick={() => !isDisabled && onSelect(s.id)}
          disabled={isDisabled}
-         className={`p-5 rounded-2xl border transition-all text-left w-full cursor-pointer
+         className={`p-5 rounded-2xl h-fit border transition-all text-left w-full cursor-pointer
          ${isDisabled
             ? 'opacity-50 bg-gray-100 cursor-not-allowed'
             : isSelected

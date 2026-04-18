@@ -140,4 +140,23 @@
   html {
     @apply font-sans;
   }
+
+
+
+  ::-webkit-scrollbar {
+    width: 6px; /* Keep it thin */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Seamless blend with bg-gray-50 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e5e7eb; /* Tailwind gray-200 */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db; /* Tailwind gray-300 */
+  }
 }

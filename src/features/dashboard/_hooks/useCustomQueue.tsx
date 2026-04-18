@@ -27,15 +27,35 @@ export function useCustomerQueue() {
 
    const [currentlyServing, setCurrentlyServing] = useState<number | null>(null)
    const [waitingCount, setWaitingCount]         = useState(0)
-   const [userTicket, setUserTicket]                     = useState<TicketInfo | null>(null)
+   const [userTicket, setUserTicket]             = useState<TicketInfo | null>(null)
    const [position, setPosition]                 = useState(0)
    const [confirmed, setConfirmed]               = useState(false)
    const [loading, setLoading]                   = useState(true)
-   const [allTickets, setAllTickets]             = useState<QueueRow[]>([])
+   const [queues, setQueues]                     = useState<QueueRow[]>([])
 
+   // !LEAVE QUEUE
+   const removeTicket = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
 
+      if (!user) return
 
-   const [queue, setQueueu]                     = useState<TicketInfo | null>(null)
+      const { error } = await supabase
+         .from('queue')
+         .delete()
+         .eq('user_id', user.id)
+         .in('status', ['waiting', 'serving'])
+
+      if (error) {
+         console.error('Failed to delete ticket:', error.message)
+         return
+      }
+
+      setUserTicket(null)
+      setPosition(0)
+      setQueues(prev =>
+         prev.filter(t => t.user_id !== user.id)
+      )
+   }
 
    useEffect(() => {
       const fetchUserAndQueue = async () => {
@@ -94,7 +114,7 @@ export function useCustomerQueue() {
                .order('ticket_no', { ascending: true })
 
                if (allTickets) {
-                  setAllTickets(allTickets)
+                  setQueues(allTickets)
                }
             } 
          } finally {
@@ -122,30 +142,28 @@ export function useCustomerQueue() {
          (payload: RealtimePostgresChangesPayload<QueueRow>) => {
             if (!payload.new || !('status' in payload.new)) return
 
-            // !UPDATE QUEUE
-            setAllTickets((prev) => {
-               const index = prev.findIndex(t => t.id === updated.id)
-               if (index === -1) return prev
+            const updated = payload.new  
 
-               const copy = [...prev]
-               copy[index] = {
-                  ...copy[index],
-                  ...updated
+            setQueues((prev) => {
+               const index = prev.findIndex(t => t.id === updated.id)
+
+               if (!['waiting', 'serving'].includes(updated.status)) {
+                  return prev.filter(t => t.id !== updated.id)
                }
 
+               if (index === -1) return [...prev, updated]
+
+               const copy = [...prev]
+               copy[index] = { ...copy[index], ...updated }
                return copy
             })
 
-            const updated = payload.new
-
-            // !UPDATES POSITION AND CURRENTLY SERVING
             if (updated.status === 'serving') {
                setCurrentlyServing(updated.ticket_no)
                if (updated.ticket_no < userTicket.ticket_no) {
-               setPosition((prev) => Math.max(0, prev - 1))
+                  setPosition((prev) => Math.max(0, prev - 1))
                }
-            }
-
+         }
             // !UPDATE WAIT COUNT
             if (updated.status === 'waiting') {
                setWaitingCount((prev) => prev + 1)
@@ -159,12 +177,13 @@ export function useCustomerQueue() {
    const queueStatus = waitingCount <= 3 ? 'Moving Fast' : waitingCount <= 8 ? 'Moderate' : 'Busy'
 
    return {
-      allTickets,
-      userTicket, setUserTicket,
+      queues,
+      userTicket,
       position,
       currentlyServing,
       queueStatus,
       confirmed, setConfirmed,
       loading,
+      removeTicket
    }
 }

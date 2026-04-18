@@ -10,8 +10,8 @@ import {
 import Logo from "@/src/components/logo"
 
 export default async function PrivateHeader() {
-  const supabase = await createClient()
-  const { data } = await supabase.auth.getUser()
+   const supabase = await createClient()
+   const { data } = await supabase.auth.getUser()
 
    return (
       <header className="

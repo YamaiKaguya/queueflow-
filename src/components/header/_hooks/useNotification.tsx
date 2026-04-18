@@ -43,7 +43,7 @@ type Notification = {
         }
 
         fetchNotifs()
-    }, [userId])
+    }, [userId, supabase])
 
 
     // OBSERVER

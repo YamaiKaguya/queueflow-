@@ -62,7 +62,7 @@ export default function UserDropdown({ user }: Props) {
          {/* Profile */}
          <DropdownMenuItem
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-gray-700 hover:!bg-gray-100 hover:!text-gray-900 transition"
-            onClick={() => router.push("/dashboard/profile")}
+            onClick={() => router.push("/profile")}
          >
             <User size={18} className="text-gray-400" />
             <span className="text-sm font-medium">Profile</span>
@@ -71,7 +71,7 @@ export default function UserDropdown({ user }: Props) {
          {/* Settings */}
          <DropdownMenuItem
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-gray-700 hover:!bg-gray-100 hover:!text-gray-900 transition"
-            onClick={() => router.push("/dashboard/settings")}
+            onClick={() => router.push("/settings")}
          >
             <Settings size={18} className="text-gray-400" />
             <span className="text-sm font-medium">Settings</span>
