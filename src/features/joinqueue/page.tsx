@@ -60,11 +60,12 @@ export default function JoinQueue() {
                         </span>
                      </div>
                      <div className="
-                     grid
+                     flex
+                     flex-col
                      gap-2
                      h-115
                      overflow-y-auto
-                     pr-3 
+                     pr-3
                      scrollbar-thin 
                      scrollbar-thumb-gray-200 
                      scrollbar-track-transparent
