@@ -1,4 +1,4 @@
-import JoinQueue from "@/src/features/joinqueue/page"
+import JoinQueue from "@/src/features/(Private)/joinqueue/page"
 
 export default function CustomerPage() {
    return (

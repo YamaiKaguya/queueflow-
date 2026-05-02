@@ -1,9 +1,7 @@
-import StaffDashboardPages  from '@/src/features/staff-dashboard/page'
+import DashBoard   from '@/src/features/(Staff)/dashboard/page'
 
 export default function StaffDashboardPage() {
    return (
-      <>
-         <StaffDashboardPages/>
-      </>
+      <DashBoard />
    )
 }

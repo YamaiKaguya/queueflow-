@@ -1,4 +1,4 @@
-import DashBoard from '@/src/features/dashboard/page'
+import DashBoard from '@/src/features/(Private)/dashboard/page'
 
 export default function CustomerPage() {
    return (

@@ -1,4 +1,4 @@
-import Setting from "@/src/features/settings/Page";
+import Setting from "@/src/features/(Private)/settings/Page";
 
 export default function Settings() {
    return (

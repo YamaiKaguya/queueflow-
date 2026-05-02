@@ -1,4 +1,4 @@
-import Landing from "@/src/features/landing/page";
+import Landing from "@/src/features/(public)/landing/page";
 
 export default function Home() {
 

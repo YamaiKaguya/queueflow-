@@ -1,14 +1,17 @@
+import { QueueProvider } from '@/src/features/(Staff)/dashboard/_context/QueueContext'
 import PrivateHeader from "@/src/components/header/PrivateHeader"
 
 export default async function PrivateLayout({
-children,
+   children,
 }: {
-children: React.ReactNode
+   children: React.ReactNode
 }) {
    return (
       <div className="min-h-screen antialiased flex flex-col">
          <PrivateHeader />
-         {children}
+         <QueueProvider>
+            {children}
+         </QueueProvider>
       </div>
    )
 }
