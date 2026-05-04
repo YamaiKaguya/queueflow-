@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { createClient } from '@/src/lib/supabase/client'
-import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
+import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 
 type QueueRow = {
    id: string
@@ -29,19 +29,16 @@ export function useCustomerQueue() {
    const [waitingCount, setWaitingCount]         = useState(0)
    const [userTicket, setUserTicket]             = useState<TicketInfo | null>(null)
    const [peopleAhead, setPeopleAhead]           = useState<number | null>(null)
-   const [estWaitSecs, setEstWaitSecs]           = useState<number | null>(null) // ← renamed
+   const [estWaitSecs, setEstWaitSecs]           = useState<number | null>(null) 
    const [confirmed, setConfirmed]               = useState(false)
    const [loading, setLoading]                   = useState(true)
    const [queues, setQueues]                     = useState<QueueRow[]>([])
 
-   /* ─────────────────────────────────────────────
-      REFRESH
-   ───────────────────────────────────────────── */
+   // !REFRESH FUNCTION
    const refreshQueue = useCallback(async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
-      // GETS USER TICKET
       const { data: existing } = await supabase
          .from('queue')
          .select('ticket_no, service')
@@ -49,7 +46,6 @@ export function useCustomerQueue() {
          .in('status', ['waiting', 'serving'])
          .maybeSingle()
 
-      // IF NOT
       if (!existing) {
          setUserTicket(null)
          setQueues([])
@@ -60,12 +56,13 @@ export function useCustomerQueue() {
          return
       }
 
+      // TICKET
       setUserTicket({
          ticket_no: existing.ticket_no,
-         service: existing.service ?? ''
+         service: existing.service
       })
 
-      /* 1. USER POSITION */
+      /* POSITION */
       const { count } = await supabase
          .from('queue')
          .select('*', { count: 'exact', head: true })
@@ -73,9 +70,7 @@ export function useCustomerQueue() {
          .eq('status', 'waiting')
          .lt('ticket_no', existing.ticket_no)
 
-      const ahead = count ?? 0
-      
-      /* 3. CURRENTLY SERVING */
+      /* CURRENTLY SERVING */
       const { data: servingRow } = await supabase
          .from('queue')
          .select('ticket_no')
@@ -85,11 +80,10 @@ export function useCustomerQueue() {
 
       setCurrentlyServing(servingRow?.ticket_no ?? null)
 
-      // Add 1 if someone is being served
-      const totalAhead = ahead + (servingRow ? 1 : 0)
+      const totalAhead = count + (servingRow ? 1 : 0)
       setPeopleAhead(totalAhead)
 
-      // !ESTIMATES
+      // ESTIMATES
       const { data: estimate } = await supabase
          .from('queue_estimates')
          .select('estimated_wait_seconds, waiting_count, avg_service_seconds')
@@ -97,11 +91,11 @@ export function useCustomerQueue() {
          .single()
 
       if (estimate) {
-         // If user is first in line, wait time is 0
+         // 0 IF FIRST IN LINE
          if (totalAhead === 0) {
             setEstWaitSecs(0)
          } else {
-            // Calculate wait time based on people ahead × average service time
+            // *PEOPLE AHEAD × AVERAGE SERVICE TIME
             const avgServiceTime = estimate.avg_service_seconds ?? 0
             const calculatedWait = Math.round(totalAhead * avgServiceTime)
             setEstWaitSecs(calculatedWait)
@@ -109,7 +103,7 @@ export function useCustomerQueue() {
          setWaitingCount(estimate.waiting_count ?? 0)
       }
       
-      // !FULL QUEUE LIST
+      // FULL QUEUE LIST
       const { data: queueState } = await supabase
          .from('queue')
          .select('*')
@@ -134,36 +128,38 @@ export function useCustomerQueue() {
       void init()
    }, [refreshQueue])
 
-   // !REALTIME
+   // !CHANNEL
    useEffect(() => {
-      const channel = supabase
-         .channel('queue-realtime')
-         .on(
-         'postgres_changes',
-         { event: '*', schema: 'public', table: 'queue' },
-         async (payload: RealtimePostgresChangesPayload<QueueRow>) => {
-            const newRow = payload.new as QueueRow | null
-            const oldRow = payload.old as QueueRow | null
-            const target = newRow ?? oldRow
-            if (!target) return
+      let channel: RealtimeChannel | null = null
+      let isMounted = true
 
-            await refreshQueue()
+      const setupRealtime = async () => {
+         const { data: { user } } = await supabase.auth.getUser()
+         if (!user || !isMounted) return
 
-            setQueues((prev) => {
-               if (payload.eventType === 'DELETE') {
-               return prev.filter(t => t.id !== target.id)
+         channel = supabase
+            .channel('queue-realtime')
+            .on(
+               'postgres_changes',
+               { event: '*', schema: 'public', table: 'queue' },
+               async (payload: RealtimePostgresChangesPayload<QueueRow>) => {
+                  const newRow = payload.new as QueueRow | null
+                  const oldRow = payload.old as QueueRow | null
+                  const target = newRow ?? oldRow
+                  if (!target) return
+
+                  await refreshQueue()
                }
-               const index = prev.findIndex(t => t.id === target.id)
-               if (index === -1) return [...prev, target]
-               const copy = [...prev]
-               copy[index] = { ...copy[index], ...target }
-               return copy
-            })
-         }
-         )
-         .subscribe()
+            )
+            .subscribe()
+      }
 
-      return () => { void supabase.removeChannel(channel) }
+      void setupRealtime()
+
+      return () => {
+         isMounted = false
+         if (channel) supabase.removeChannel(channel)
+      }
    }, [supabase, refreshQueue])
 
    // !REMOVE TICKET
@@ -187,7 +183,7 @@ export function useCustomerQueue() {
       setEstWaitSecs(null)
    }
 
-   // !DERIVED
+   // !STATUS
    const queueStatus =
       waitingCount <= 3 ? 'Moving Fast'
       : waitingCount <= 8 ? 'Moderate'

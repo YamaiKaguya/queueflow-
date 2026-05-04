@@ -12,13 +12,12 @@
         "next.config.ts": true,
         "next-env.d.ts": true,
         "src/data": true,
-        "src/assets/style": true,
-        "src/assets": true,
         "node_modules": true,
         "package-lock.json": true,
         "postcss.config.mjs": true,
         "README.md": true,
-        "tsconfig.json": true
+        "src/assets/style": true,
+        "public": true
     },
     "hide-files.files": [
         ".next",
@@ -28,12 +27,11 @@
         "next.config.ts",
         "next-env.d.ts",
         "src/data",
-        "src/assets/style",
-        "src/assets",
         "node_modules",
         "package-lock.json",
         "postcss.config.mjs",
         "README.md",
-        "tsconfig.json"
+        "src/assets/style",
+        "public"
     ]
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useQueueContext } from '../dashboard/_context/QueueContext'
+// import { useQueueContext } from '../dashboard/_context/QueueContext'
 import { useStaffQueue } from './_hooks/useStaff'
 
 import { useState } from "react"
@@ -37,24 +37,6 @@ export default function StaffDashboard() {
       : serving
 
    const filteredHasNext = filteredWaiting.length > 0
-
-   if (loading) {
-      return (
-         <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-               <div className="flex flex-col items-center gap-3">
-                  <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin" />
-                  
-                  <p className="text-gray-500 font-medium">
-                     Loading queue system...
-                  </p>
-
-                  <p className="text-xs text-gray-400">
-                     Preparing dashboard data
-                  </p>
-               </div>
-         </main>
-      )
-   }
 
    return (
       <main className="flex gap-4 p-12 items-start">
