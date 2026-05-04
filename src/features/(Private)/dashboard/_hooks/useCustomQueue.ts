@@ -93,6 +93,7 @@ export function useCustomerQueue() {
       if (estimate) {
          // 0 IF FIRST IN LINE
          if (totalAhead === 0) {
+            setPeopleAhead(0)
             setEstWaitSecs(0)
          } else {
             // *PEOPLE AHEAD × AVERAGE SERVICE TIME

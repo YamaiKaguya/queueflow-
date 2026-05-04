@@ -38,9 +38,9 @@ export default function DashBoard() {
                <TicketCard
                   ticketNo={ticket?.ticket_no ?? 0}
                   service={ticket?.service ?? "N/A"}
-                  currentlyServing={currentlyServing}
-                  confirmed={confirmed}
-                  onConfirm={() => setConfirmed(true)}
+                  peopleAhead={peopleAhead}
+                  setConfirm={() => setConfirmed(true)}
+                  confirm={confirmed}
                   onLeave={removeTicket}
                   loading={loading}
                />

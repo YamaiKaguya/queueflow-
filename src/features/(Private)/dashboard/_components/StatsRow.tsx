@@ -18,6 +18,7 @@ type StatCardProps = {
     color?: string
 }
 
+// !STAT CARD
 export function StatCard({
     icon,
     label,
@@ -48,6 +49,7 @@ export function StatCard({
     )
 }
 
+// !FORMAT TIME
 function formatWaitTime(
     secs: number | null,
     peopleAhead: number | null,
@@ -55,16 +57,12 @@ function formatWaitTime(
 ): string {
     if (!hasTicket || secs === null || peopleAhead === null) return "N/A"
 
-    // If no one ahead (including person being served), wait time is 0
-    if (peopleAhead === 0) return "0 Min"
-
-    // secs is already calculated in the hook, don't multiply again
     if (secs < 60) return `${secs} Secs`
-
     const mins = Math.ceil(secs / 60)
     return `${mins} ${mins === 1 ? "Min" : "Mins"}`
 }
 
+// !STATUS
 function getStatusColor(status: string | null): string {
     if (!status) return "text-gray-400"
     if (status === "Moving Fast") return "text-green-500"
@@ -72,36 +70,27 @@ function getStatusColor(status: string | null): string {
     return "text-red-500"
 }
 
+// !MAIN COMPONENT
 export function StatsRow({
     peopleAhead,
     estWaitSecs,
     queueStatus,
-    currentlyServing,
-    userTicketNo,
     loading
 }: Props) {
-    // Check if user has a ticket
+
     const hasTicket =
         peopleAhead !== null &&
         estWaitSecs !== null &&
         queueStatus !== null
 
-    // Check if current user is being served
-    const isUserBeingServed = currentlyServing === userTicketNo && userTicketNo !== null
-
-    // Adjust peopleAhead and estWaitSecs display if user is being served
-    const displayPeopleAhead = isUserBeingServed ? 0 : peopleAhead
-    const displayEstWaitSecs = isUserBeingServed ? 0 : estWaitSecs
-
     return (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
             <StatCard
                 icon={<Users size={22} strokeWidth={1.5} />}
                 label="People Ahead"
                 value={
                     hasTicket
-                        ? `${displayPeopleAhead} ${displayPeopleAhead === 1 ? "Person" : "People"}`
+                        ? `${peopleAhead} ${peopleAhead === 1 ? "Person" : "People"}`
                         : "N/A"
                 }
                 loading={loading}
@@ -111,7 +100,7 @@ export function StatsRow({
             <StatCard
                 icon={<Clock size={22} strokeWidth={1.5} />}
                 label="Est. Wait Time"
-                value={formatWaitTime(displayEstWaitSecs, displayPeopleAhead, hasTicket)}
+                value={formatWaitTime(estWaitSecs, peopleAhead, hasTicket)}
                 loading={loading}
                 color="text-purple-500"
             />
@@ -131,7 +120,6 @@ export function StatsRow({
                 loading={loading}
                 color={hasTicket ? getStatusColor(queueStatus) : "text-gray-400"}
             />
-
         </div>
     )
 }

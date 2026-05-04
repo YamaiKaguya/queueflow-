@@ -26,7 +26,7 @@ type Props = {
    loading?: boolean
 }
 
-
+// !SKELETON
 function SkeletonRow() {
    return (
       <div className="flex items-center gap-4 py-4 px-5 rounded-2xl border border-gray-100 animate-pulse">
@@ -40,8 +40,7 @@ function SkeletonRow() {
    )
 }
 
-/* ── Serving Row (NO LOADER ICON) ───────── */
-
+// !SERVING
 function ServingRow({ ticket }: { ticket: QueueRow }) {
    const prefix = ticket.service?.charAt(0).toUpperCase() ?? '?'
    const formatted = `${prefix} – ${String(ticket.ticket_no).padStart(3, '0')}`
@@ -73,9 +72,8 @@ function ServingRow({ ticket }: { ticket: QueueRow }) {
    )
 }
 
-/* ── Waiting Row ────────────────────────── */
-
-function WaitingRow({ ticket, position }: { ticket: QueueRow; position: number }) {
+// !WAITING
+function WaitingRow({ ticket }: { ticket: QueueRow;}) {
    const prefix = ticket.service?.charAt(0).toUpperCase() ?? '?'
    const formatted = `${prefix} – ${String(ticket.ticket_no).padStart(3, '0')}`
 
@@ -106,8 +104,7 @@ function WaitingRow({ ticket, position }: { ticket: QueueRow; position: number }
    )
 }
 
-/* ── Main Component ─────────────────────── */
-
+// !MAIN COMPONENT
 export function CurrentlyServingList({ allTickets, loading }: Props) {
    const [page, setPage] = useState(0)
    const PAGE_SIZE = 5
@@ -194,11 +191,10 @@ export function CurrentlyServingList({ allTickets, loading }: Props) {
                {/* WAITING */}
                {paginatedWaiting.length > 0 && (
                   <div className="flex flex-col gap-2">
-                     {paginatedWaiting.map((t, i) => (
+                     {paginatedWaiting.map((t) => (
                         <WaitingRow
                            key={t.id}
                            ticket={t}
-                           position={start + i + 1}
                         />
                      ))}
                   </div>
