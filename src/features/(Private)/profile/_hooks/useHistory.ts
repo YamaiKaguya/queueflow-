@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useReducer } from 'react'
+import { useEffect, useState } from 'react'
 import { createClient } from '@/src/lib/supabase/client'
 
 type Status = 'Completed' | 'Canceled' | 'No-show' | 'Pending'
@@ -15,77 +15,26 @@ export interface QueueHistory {
 
 const PAGE_SIZE = 5
 
-type State = {
-    data: QueueHistory[]
-    loading: boolean
-    pageLoading: boolean
-    error: string | null
-    page: number
-    hasMore: boolean
-}
-
-type Action =
-    | { type: 'START_LOADING'; page: number }
-    | { type: 'SUCCESS'; payload: QueueHistory[] }
-    | { type: 'ERROR'; message: string }
-    | { type: 'SET_PAGE'; page: number }
-
-function reducer(state: State, action: Action): State {
-    switch (action.type) {
-        case 'START_LOADING':
-            return {
-                ...state,
-                loading: action.page === 0,
-                pageLoading: action.page !== 0,
-                error: null,
-                page: action.page,
-            }
-
-        case 'SUCCESS':
-            return {
-                ...state,
-                data: action.payload,
-                hasMore: action.payload.length === PAGE_SIZE,
-                loading: false,
-                pageLoading: false,
-            }
-
-        case 'ERROR':
-            return {
-                ...state,
-                error: action.message,
-                loading: false,
-                pageLoading: false,
-            }
-
-        case 'SET_PAGE':
-            return {
-                ...state,
-                page: action.page,
-            }
-
-        default:
-            return state
-    }
-}
-
 export function useQueueHistory() {
     const supabase = createClient()
 
-    const [state, dispatch] = useReducer(reducer, {
-        data: [],
-        loading: true,
-        pageLoading: false,
-        error: null,
-        page: 0,
-        hasMore: true,
-    })
+    const [data, setData] = useState<QueueHistory[]>([])
+    const [loading, setLoading] = useState(true)
+    const [pageLoading, setPageLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [page, setPage] = useState(0)
+    const [hasMore, setHasMore] = useState(true)
 
-    const fetchHistory = useCallback(
-        async (pageIndex: number) => {
-            dispatch({ type: 'START_LOADING', page: pageIndex })
+    useEffect(() => {
+        let ignore = false // prevents state updates after unmount
 
-            const from = pageIndex * PAGE_SIZE
+        const run = async () => {
+            if (page === 0) setLoading(true)
+            else setPageLoading(true)
+
+            setError(null)
+
+            const from = page * PAGE_SIZE
             const to = from + PAGE_SIZE - 1
 
             const { data, error } = await supabase
@@ -94,41 +43,47 @@ export function useQueueHistory() {
                 .order('created_at', { ascending: false })
                 .range(from, to)
 
+            if (ignore) return
+
             if (error) {
-                dispatch({ type: 'ERROR', message: error.message })
-                return
+                setError(error.message)
+            } else {
+                const result = data || []
+                setData(result)
+                setHasMore(result.length === PAGE_SIZE)
             }
 
-            dispatch({ type: 'SUCCESS', payload: data || [] })
-        },
-        [supabase]
-    )
+            setLoading(false)
+            setPageLoading(false)
+        }
 
-    useEffect(() => {
-        fetchHistory(state.page)
-    }, [state.page, fetchHistory])
+        run()
+
+        return () => {
+            ignore = true
+        }
+    }, [page, supabase])
 
     const nextPage = () => {
-        if (state.hasMore) {
-            dispatch({ type: 'SET_PAGE', page: state.page + 1 })
-        }
+        if (hasMore) setPage(p => p + 1)
     }
 
     const prevPage = () => {
-        dispatch({ type: 'SET_PAGE', page: Math.max(state.page - 1, 0) })
+        setPage(p => Math.max(p - 1, 0))
     }
 
     const refresh = () => {
-        fetchHistory(state.page)
+        // just re-trigger effect
+        setPage(p => p)
     }
 
     return {
-        data: state.data,
-        loading: state.loading,
-        pageLoading: state.pageLoading,
-        error: state.error,
-        page: state.page,
-        hasMore: state.hasMore,
+        data,
+        loading,
+        pageLoading,
+        error,
+        page,
+        hasMore,
         nextPage,
         prevPage,
         refresh,

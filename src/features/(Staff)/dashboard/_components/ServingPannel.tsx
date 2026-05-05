@@ -1,5 +1,5 @@
 import { QueueRow, TicketStatus } from "../_hooks/useStaff"
-import { Play, AlertTriangle } from "lucide-react"
+import { Play, Accessibility } from "lucide-react"
 
 type Props = {
     filteredServing: QueueRow[]
@@ -8,7 +8,6 @@ type Props = {
     actionLoading: string | null
     callNext: () => void
     updateStatus: (id: string, status: TicketStatus) => Promise<void>
-    hasServing: boolean
 }
 
 export default function ServingPanel({
@@ -18,12 +17,11 @@ export default function ServingPanel({
     actionLoading,
     callNext,
     updateStatus,
-    hasServing,
 }: Props) {
     const current = filteredServing[0]
-    const nextUp = filteredWaiting[0]           // peek at who's next
+    const nextUp = filteredWaiting[0]
     const isLoading = actionLoading !== null
-    const isBlocked = !filteredHasNext || isLoading || hasServing
+    const isBlocked = !filteredHasNext || isLoading || !!current
 
     return (
         <section className="w-full h-full space-y-6 col-span-2">
@@ -37,18 +35,14 @@ export default function ServingPanel({
                         </h2>
 
                         <div className="flex items-end gap-4 mt-2">
-                            <div className={`text-6xl font-extrabold tracking-tight ${
-                                current?.priority ? "text-amber-500" : "text-blue-500"
-                            }`}>
+                            <div className="text-6xl font-extrabold tracking-tight text-blue-500">
                                 {current?.ticket_no ?? "—"}
                             </div>
-
-                            {/* Priority badge on current */}
                             {current?.priority && (
-                                <div className="mb-2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-sm font-semibold">
-                                    <AlertTriangle className="w-4 h-4" />
-                                    Priority Patient
-                                </div>
+                                <span className="flex items-center gap-1.5 mb-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-600">
+                                    <Accessibility size={13} />
+                                    Priority
+                                </span>
                             )}
                         </div>
 
@@ -59,25 +53,17 @@ export default function ServingPanel({
 
                     {/* NEXT UP PREVIEW */}
                     {nextUp && (
-                        <div className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm ${
-                            nextUp.priority
-                                ? "bg-amber-50 border border-amber-200"
-                                : "bg-gray-50 border border-gray-100"
-                        }`}>
-                            <span className={`text-xs uppercase tracking-wider font-semibold ${
-                                nextUp.priority ? "text-amber-500" : "text-gray-400"
-                            }`}>
+                        <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm bg-gray-50 border border-gray-100">
+                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-400">
                                 Next up
                             </span>
-                            <span className={`font-bold ${
-                                nextUp.priority ? "text-amber-600" : "text-gray-700"
-                            }`}>
+                            <span className="font-bold text-gray-700">
                                 #{nextUp.ticket_no}
                             </span>
                             <span className="text-gray-500">{nextUp.name}</span>
                             {nextUp.priority && (
-                                <span className="ml-auto flex items-center gap-1 text-amber-600 font-medium text-xs">
-                                    <AlertTriangle className="w-3 h-3" />
+                                <span className="flex items-center gap-1 ml-auto px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-600">
+                                    <Accessibility size={11} />
                                     Priority
                                 </span>
                             )}
@@ -94,20 +80,16 @@ export default function ServingPanel({
                             className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold transition
                                 ${isBlocked
                                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                    : nextUp?.priority
-                                        ? "bg-amber-500 hover:bg-amber-600 text-white cursor-pointer"
-                                        : "bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
+                                    : "bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
                                 }`}
                         >
                             <Play size={16} />
-                            {hasServing
+                            {current
                                 ? "PATIENT IN SERVICE"
                                 : isLoading
                                     ? "Calling..."
                                     : filteredHasNext
-                                        ? nextUp?.priority
-                                            ? "CALL PRIORITY PATIENT"
-                                            : "CALL NEXT PATIENT"
+                                        ? "CALL NEXT PATIENT"
                                         : "NO MORE PATIENTS"}
                         </button>
 

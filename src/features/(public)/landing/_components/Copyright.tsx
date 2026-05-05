@@ -10,7 +10,7 @@ export default function Footer() {
                <Info className="w-3 h-3" />
                <span>2026 QueueFlow+. All rights reserved.</span>
             </div>
-            <div className="flex items-center gap-4 text-sm text-gray-400">
+            {/* <div className="flex items-center gap-4 text-sm text-gray-400">
                {links.map((item) => (
                   <a
                   key={item}
@@ -20,7 +20,7 @@ export default function Footer() {
                   {item}
                   </a>
                ))}
-            </div>
+            </div> */}
             <div className="flex items-center gap-4 text-sm text-gray-400">
                <div className="flex items-center gap-1">
                   <Globe className="w-3 h-3" />

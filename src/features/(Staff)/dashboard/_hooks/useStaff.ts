@@ -25,6 +25,7 @@ export type QueueRow = {
     type: 'Online' | 'WalkIn'
     name: string
     email?: string
+    priority:boolean
 }
 
 export type ServiceRow = {
@@ -99,7 +100,6 @@ export function useStaffQueue() {
                 { event: '*', schema: 'public', table: 'queue' },
                 (payload: RealtimePostgresChangesPayload<QueueRow>) => {
 
-                    // Handle DELETE (customer left queue via removeTicket)
                     if (payload.eventType === 'DELETE') {
                         const deleted = payload.old as Partial<QueueRow>
                         if (!deleted?.id) return
@@ -111,7 +111,6 @@ export function useStaffQueue() {
                     const updated = payload.new as QueueRow
                     if (!updated) return
 
-                    // NO-SHOW
                     if (updated.status === 'no-show') {
                         setQueue(prev => prev.filter(t => t.id !== updated.id))
                         setNoShow(prev => {
@@ -126,13 +125,11 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // DISMISSED
                     if (updated.status === 'dismissed') {
                         setNoShow(prev => prev.filter(t => t.id !== updated.id))
                         return
                     }
 
-                    // DONE / SKIPPED
                     if (updated.status === 'done' || updated.status === 'skipped') {
                         setQueue(prev =>
                             prev.map(t =>
@@ -145,7 +142,6 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // WAITING (REQUEUE)
                     if (updated.status === 'waiting') {
                         setNoShow(prev => prev.filter(t => t.id !== updated.id))
                         setQueue(prev => {
@@ -162,7 +158,6 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // DEFAULT (INSERT / UPDATE → serving or other)
                     setQueue(prev => {
                         const exists = prev.find(t => t.id === updated.id)
                         if (exists) {
@@ -184,8 +179,11 @@ export function useStaffQueue() {
     }, [])
 
     // CALL NEXT
-    const callNext = useCallback(async () => {
-        const next = queue.find(t => t.status === 'waiting')
+    const callNext = useCallback(async (serviceLabel?: string) => {
+        const next = queue.find(t =>
+            t.status === 'waiting' &&
+            (!serviceLabel || t.service?.toLowerCase().trim() === serviceLabel.toLowerCase().trim())
+        )
         if (!next) return
 
         setActionLoading(next.id)
@@ -203,7 +201,6 @@ export function useStaffQueue() {
         setActionLoading(null)
     }, [queue])
 
-    
     // UPDATE STATUS
     const updateStatus = useCallback(
         async (id: string, status: TicketStatus) => {
@@ -249,8 +246,6 @@ export function useStaffQueue() {
         [queue]
     )
 
-    const hasServing = serving.length > 0
-
     return {
         queue,
         loading,
@@ -259,7 +254,6 @@ export function useStaffQueue() {
         waiting,
         callNext,
         updateStatus,
-        hasServing,
         noShow,
         services,
     }

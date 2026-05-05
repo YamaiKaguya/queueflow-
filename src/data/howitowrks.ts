@@ -6,7 +6,7 @@ export const Data = [
       description:
       "Customer enjoy their time elsewhere while keeping an eye on their phone",
       avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      items: ["Receive SMS Update", "Track Queue Status", "Arrive on Time"],
+      items: ["Receive Email Update", "Manage Queue", "Arrive on Time"],
       highlighted: false,
    },
    {
@@ -15,7 +15,7 @@ export const Data = [
       description:
       "Empower your team with tools that reduce stress and clarify priorities",
       avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      items: ["View Live Queue", "Call Next Customer"],
+      items: ["Manages Users Queue", "Track Customer Queue"],
       highlighted: true,
    },
    {

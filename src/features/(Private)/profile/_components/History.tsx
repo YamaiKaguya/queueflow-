@@ -125,7 +125,7 @@ export default function VisitHistory() {
     const showSkeleton = loading || pageLoading
 
     return (
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6">
 
             {/* HEADER */}
             <div className="flex items-center gap-2 mb-5">

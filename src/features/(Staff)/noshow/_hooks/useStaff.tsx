@@ -106,6 +106,5 @@ export function useNoShow() {
     noShow,
     services,
     loading,
-    noShowCount: noShow.length,
   }
 }

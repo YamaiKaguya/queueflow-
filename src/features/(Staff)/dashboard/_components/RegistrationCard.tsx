@@ -24,13 +24,15 @@ export default function RegistrationCard({ selectedService }: Props) {
       </h3>
 
       {ticket ? (
-        <div className="text-center py-4 space-y-3">
-          <p className="text-sm text-gray-400">Ticket generated</p>
-          <p className="text-4xl font-extrabold text-blue-500">{ticket.ticket_no}</p>
-          <p className="text-sm text-gray-500">{ticket.service}</p>
+        <div className="flex flex-col py-4 h-full justify-between">
+          <div className="flex flex-col text-center space-y-3">
+            <p className="text-sm text-gray-400">Ticket generated</p>
+            <p className="text-4xl font-extrabold text-blue-500">{ticket.ticket_no}</p>
+            <p className="text-sm text-gray-500">{ticket.service}</p>
+          </div>
           <button
             onClick={reset}
-            className="w-full border border-gray-200 text-gray-600 hover:bg-gray-50 py-2 rounded-xl text-sm font-semibold transition-colors"
+            className="w-full border border-gray-200 text-gray-600 hover:bg-gray-50 py-2 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
           >
             New Registration
           </button>
@@ -49,7 +51,7 @@ export default function RegistrationCard({ selectedService }: Props) {
               type="checkbox"
               checked={priority}
               onChange={(e) => setPriority(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 accent-blue-500"
+              className="w-4 h-4 rounded border-gray-300 accent-blue-500 cursor-pointer"
             />
             Priority
           </label>
@@ -61,7 +63,7 @@ export default function RegistrationCard({ selectedService }: Props) {
           <button
             onClick={() => register(selectedService?.id ?? '', selectedService?.label ?? '')}
             disabled={loading || !name || !selectedService}
-            className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white py-2 rounded-xl text-sm font-semibold transition-colors"
+            className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white py-2 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
           >
             {loading
               ? 'Generating...'

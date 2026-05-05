@@ -21,7 +21,6 @@ type Props = {
   tickets: NoShowTicket[]
   services: Service[]
   selectedId: string | null
-  noShowCount: number
 }
 
 const ROWS_PER_PAGE = 10
@@ -30,7 +29,6 @@ export function NoShowPanel({
   tickets,
   services,
   selectedId,
-  noShowCount,
 }: Props) {
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
@@ -40,7 +38,7 @@ export function NoShowPanel({
   const filtered = tickets.filter((t) => {
     const matchesService = selectedService
       ? t.service?.toLowerCase().trim() === selectedService.label.toLowerCase().trim()
-      : true
+      : false
     const matchesQuery = query.trim()
       ? t.name.toLowerCase().includes(query.toLowerCase()) ||
         String(t.ticket_no).includes(query)
@@ -75,13 +73,13 @@ export function NoShowPanel({
           </p>
         </div>
 
-        {/* STAT CARDS */}
+        {/* STAT CARD */}
         <div className="flex gap-3">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-4 text-center min-w-[130px]">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
               No-Show Count
             </p>
-            <p className="text-4xl font-bold text-blue-500">{noShowCount}</p>
+            <p className="text-4xl font-bold text-blue-500">{filtered.length}</p>
           </div>
         </div>
       </div>
@@ -120,7 +118,7 @@ export function NoShowPanel({
             {paginated.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-center py-16 text-sm text-gray-300">
-                  No no-show records found
+                  {selectedService ? 'No no-show records found' : 'Select a department to view no-show records'}
                 </td>
               </tr>
             ) : (

@@ -6,7 +6,7 @@ import { NoShowPanel } from './_components/NoShow'
 import Sidebar from './_components/Sidebar'
 
 export function NoShowPage() {
-    const { noShow, services, noShowCount } = useNoShow()
+    const { noShow, services } = useNoShow()
     const [selectedId, setSelectedId] = useState<string | null>(null)
 
     return (
@@ -20,7 +20,6 @@ export function NoShowPage() {
                 tickets={noShow}
                 services={services}
                 selectedId={selectedId}
-                noShowCount={noShowCount}
             />
         </main>
     )

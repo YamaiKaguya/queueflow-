@@ -3,7 +3,7 @@ import logo from "@/public/QueueFlow+.png";
 import { Mail, MapPin } from "lucide-react";
 
 const footerLinks = [
-   { heading: "Quick Links", links: ["How It Works", "About", "Benefits"] },
+   { heading: "Quick Links", links: ["How It Works", "Features", "FAQ"] },
    { heading: "Resources", links: ["Terms of Use", "Privacy Policy"] },
 ];
 

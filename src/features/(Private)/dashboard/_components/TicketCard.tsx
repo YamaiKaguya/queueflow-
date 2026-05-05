@@ -85,21 +85,21 @@ export function TicketCard({
 
          {/* CONFIRMATION */}
          <div className="px-9 py-7 flex justify-between items-center gap-4">
-            <div className="flex items-start gap-3">
+            <div className="flex items-center gap-3">
                <div className={`mt-0.5 shrink-0 ${ticketNo === 0 ? 'text-red-500' : 'text-green-500'}`}>
                   {ticketNo === 0 ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
                </div>
                <div>
-                  <p className="text-sm font-bold text-slate-800">
+                  <p className="text-base font-bold text-slate-800">
                      {ticketNo === 0
                         ? 'No active ticket.'
                         : confirm
                         ? 'Arrival Confirmed'
                         : 'Next Step: Confirm Your Arrival'}
                   </p>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-sm text-slate-400 mt-0.5">
                      {ticketNo === 0
-                        ? 'No active ticket. Join a queue to get started.'
+                        ? 'Join a queue to get started.'
                         : confirm
                         ? 'You are confirmed. Please wait to be called.'
                         : 'Tap confirm when you are within the facility.'}

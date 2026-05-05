@@ -24,7 +24,6 @@ export default function FAQSection() {
                   <p className="text-base text-[var(--primary-color)]">NEED MORE ANSWERS?</p>
                   <div className="flex gap-3">
                   <Button variant="scaledbutton">Email Support</Button>
-                  <Button variant="scaledbutton_inverted">Contact Sales</Button>
                   </div>
                </div>
             </div>

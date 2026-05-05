@@ -94,7 +94,7 @@ export default function PatientProfile() {
 
     if (isLoading) return (
         <div className="space-y-7">
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <ProfileHeader
                     initials=""
                     name=""

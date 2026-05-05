@@ -127,7 +127,7 @@ export default function Notification() {
                   <div className="border-t border-gray-100 mt-1 mb-1" />
                   <button
                      onClick={markAllRead}
-                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 hover:text-red-600 transition"
+                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 hover:text-red-600 transition cursor-pointer"
                   >
                      <span className="text-sm font-medium">Mark all as read</span>
                   </button>

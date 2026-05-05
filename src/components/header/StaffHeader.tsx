@@ -5,6 +5,7 @@ import DashboardNav from "@/src/components/header/_components/dashboardnav"
 const staffNavItems = [
     { href: "/staff/dashboard", label: "Dashboard" },
     { href: "/staff/noshow", label: "No-shows" },
+    { href: "/staff/overview", label: "Overview" },
 ]
 
 export default async function StaffHeader() {

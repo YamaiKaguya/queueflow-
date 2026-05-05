@@ -27,7 +27,7 @@ export default function WaitingQueue({ waiting }: Props) {
                             {priorityTickets.length > 0 && (
                                 <>
                                     <span className="h-3 w-px bg-gray-200" />
-                                    <span className="text-amber-500 font-medium flex items-center gap-1">
+                                    <span className="text-blue-500 font-medium flex items-center gap-1">
                                         <AlertTriangle className="w-3 h-3" />
                                         {priorityTickets.length} priority
                                     </span>
@@ -63,17 +63,17 @@ export default function WaitingQueue({ waiting }: Props) {
                             {priorityTickets.map((ticket) => (
                                 <div
                                     key={ticket.id}
-                                    className="grid grid-cols-12 px-6 py-4 items-center bg-amber-50 border-l-4 border-amber-400 hover:bg-amber-100/60 transition"
+                                    className="grid grid-cols-12 px-6 py-4 items-center bg-blue-50 border-l-4 border-blue-400 hover:bg-blue-100/60 transition"
                                 >
                                     {/* QUEUE NO */}
-                                    <div className="col-span-2 font-bold text-amber-600 flex items-center gap-1.5">
+                                    <div className="col-span-2 font-bold text-blue-600 flex items-center gap-1.5">
                                         {ticket.ticket_no}
-                                        <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                                        <AlertTriangle className="w-3.5 h-3.5 text-blue-500" />
                                     </div>
 
                                     {/* PATIENT */}
                                     <div className="col-span-4 flex items-center gap-2 text-gray-900 font-medium">
-                                        <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                                             <User className="w-4 h-4" />
                                         </div>
                                         <span className="truncate">{ticket.name ?? "Anonymous"}</span>
@@ -84,7 +84,7 @@ export default function WaitingQueue({ waiting }: Props) {
                                         <span className="inline-flex px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">
                                             {ticket.type}
                                         </span>
-                                        <span className="inline-flex px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-200 text-amber-800">
+                                        <span className="inline-flex px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-200 text-blue-800">
                                             Priority
                                         </span>
                                     </div>

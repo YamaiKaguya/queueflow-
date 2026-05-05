@@ -22,7 +22,7 @@ export function useRegistration() {
             .from('queue')
             .insert({
             name,
-            service: serviceId,   // ← id for the FK constraint
+            service: serviceId,  
             status: 'waiting',
             priority,
             type: 'WalkIn',
@@ -32,7 +32,7 @@ export function useRegistration() {
 
         if (insertError) throw insertError
 
-        setTicket({ ticket_no: data.ticket_no, service: serviceLabel })  // ← label for display
+        setTicket({ ticket_no: data.ticket_no, service: serviceLabel }) 
         setName('')
         setPriority(false)
         } catch (err) {
